@@ -41,7 +41,7 @@ $link-color:              $theme1;
 #app {
   color: var(--text-color);
   background-color: var(--bg-color);
-  height: 100vh;
+  min-height: 100vh;
   display: grid;
   grid-template-rows: [row1-start] var(--navbar-height) 1fr var(--navbar-height);
   grid-template-areas:
@@ -64,9 +64,12 @@ $link-color:              $theme1;
 
   .main-container {
     grid-area: main;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 2em 0;
+    > .signin {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
   }
   .main-footer {
     grid-area: footer;

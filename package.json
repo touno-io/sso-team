@@ -13,11 +13,18 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-4",
+    "@octokit/core": "^4.0.4",
     "@vueuse/head": "^0.7.6",
+    "markdown-it": "^13.0.1",
+    "markdown-it-emoji": "^2.0.2",
+    "markdown-it-mermaid": "^0.2.5",
+    "markdown-it-mermaid-plugin": "^0.1.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {
     "@popperjs/core": "^2.11.5",
+    "@types/markdown-it": "^12.2.3",
+    "@types/markdown-it-emoji": "^2.0.2",
     "@types/node": "^17.0.31",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",

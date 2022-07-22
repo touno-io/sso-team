@@ -1,55 +1,17 @@
-<template>
-  <div class="row">
-    <div class="d-none d-lg-flex col-lg-12 col-xl-16 justify-content-end">
-      <img class="ml-auto todos" src="../assets/todos_empty.svg">
-    </div>
-    <div class="col-36 col-lg-24 col-xl-20 mx-auto">
-      <div class="row">
-        <div class="col-30 col-md-24 mx-auto">
-          <h2>Sign-In</h2>
-          <small>Please sign-in with TOUNO.io ID to proceed.</small>
-          <div class="login-form pt-3">
-            <form v-tabindex @submit.prevent="onLogin">
-              <div class="form-group">
-                <input v-model="username" tabindex="1" type="text" class="form-control username" placeholder="TEAM Account ID (@touno.io)">
-                <input v-model="password" tabindex="2" type="password" class="form-control password" placeholder="Password">
-                <small class="help-block text-danger text-bold">
-                  <span v-if="errorMessage">
-                    <fa icon="fa-solid fa-triangle-exclamation" />
-                    {{ errorMessage }}
-                  </span>
-                </small>
-              </div>
-              <div class="form-group">
-                <input type="checkbox" v-model="remember" /> Remember Me
-              </div>
-              <button
-                :disabled="submitted" tabindex="3" type="submit" class="btn btn-block btn-primary"
-                v-text="submitted ? 'Please wait...' : retry > 0 ? 'Retry again, Sign In' : 'Sign In'"
-              />
-            </form>
-            <div class="row forgot-menu">
-              <div class="col-36 pt-3">
-                <a href="/forgot-id?username"><fa icon="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;" /> Forgot your account ID?</a>
-              </div>
-              <div class="col-36 pt-1">
-                <a href="/forgot-id?password"><fa icon="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;" /> Forgot your password?</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-    
-    </div>
-  </div> 
-</template>
-
 <script setup>
+import { useRoute, useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { ref } from 'vue'
 
 useHead({ title: 'Sign In' })
+
+const router = useRouter()
+const route = useRoute()
+
+const { redirectUri, applicationId, once } = route.query
+if (!redirectUri || !applicationId || !once) router.replace('/')
+
+console.log('query:', { redirectUri, applicationId, once })
 
 let retry = ref(0)
 let submitted = ref(false)
@@ -88,8 +50,7 @@ const onLogin = async () => {
     errorMessage.value = !ex.response ? ex.message : ex.response.status > 400 ? 'Username or Password worng.' : 'Server endpoint is offline.'
     submitted.value = false
     retry.value++
-    console.log(errorMessage)
-    console.error(ex)
+    console.log(ex)
   }
 }
 
@@ -147,6 +108,53 @@ const onLogin = async () => {
 //   }
 // }
 </script>
+
+<template>
+<div class="signin h-100">
+  <div class="row">
+    <div class="d-none d-lg-flex col-lg-12 col-xl-16 justify-content-end">
+      <img class="ml-auto todos" src="../assets/todos_empty.svg">
+    </div>
+    <div class="col-36 col-lg-24 col-xl-20 mx-auto">
+      <div class="row">
+        <div class="col-30 col-md-24 mx-auto">
+          <h2>Sign-In</h2>
+          <small>Please sign-in with TOUNO.io ID to proceed.</small>
+          <div class="login-form pt-3">
+            <form v-tabindex @submit.prevent="onLogin">
+              <div class="form-group">
+                <input v-model="username" tabindex="1" type="text" class="form-control username" placeholder="TEAM Account ID (@touno.io)">
+                <input v-model="password" tabindex="2" type="password" class="form-control password" placeholder="Password">
+                <small class="help-block text-danger text-bold">
+                  <span v-if="errorMessage">
+                    <fa icon="fa-solid fa-triangle-exclamation" />
+                    {{ errorMessage }}
+                  </span>
+                </small>
+              </div>
+              <div class="form-group">
+                <input type="checkbox" v-model="remember" /> Remember Me
+              </div>
+              <button
+                :disabled="submitted" tabindex="3" type="submit" class="btn btn-block btn-primary"
+                v-text="submitted ? 'Please wait...' : retry > 0 ? 'Retry again, Sign In' : 'Sign In'"
+              />
+            </form>
+            <div class="row forgot-menu">
+              <div class="col-36 pt-3">
+                <a href="/forgot-id?username"><fa icon="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;" /> Forgot your account ID?</a>
+              </div>
+              <div class="col-36 pt-1">
+                <a href="/forgot-id?password"><fa icon="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;" /> Forgot your password?</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>
+</template>
 
 <style lang="scss">
 img.todos {
