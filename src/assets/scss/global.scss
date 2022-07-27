@@ -28,22 +28,26 @@ $link-color:              $theme1;
   --background-color: #111827;
   --navbar-height: 3.25em;
   --bg-navbar: #f7f7f7;
+  --border-navbar: transparent;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --text-color: #f7f7f7;
-    --bg-color: #111827;
-    --bg-navbar: #0e131d;
+    --bg-color: #0f121f;
+    --bg-navbar: #0f121f;
+    --border-navbar: #212436;
+    --link-color: #a2a2b3;
   }
 }
 
 #app {
   color: var(--text-color);
   background-color: var(--bg-color);
+  background-image: url(../background-circles.svg);
   min-height: 100vh;
   display: grid;
-  grid-template-rows: [row1-start] var(--navbar-height) 1fr var(--navbar-height);
+  grid-template-rows: [row1-start] var(--navbar-height) 1fr calc(var(--navbar-height) * 2.2);
   grid-template-areas:
     "navbar"
     "main"
@@ -53,6 +57,7 @@ $link-color:              $theme1;
   .main-navbar {
     grid-area: navbar;
     background-color: var(--bg-navbar);
+    border-bottom: 1px solid var(--border-navbar);
 
     .navbar {
       font-family: 'Poppins';
@@ -74,12 +79,29 @@ $link-color:              $theme1;
   .main-footer {
     grid-area: footer;
     background-color: var(--bg-navbar);
+    border-top: 1px solid var(--border-navbar);
     font-size: .65rem;
-    > .container {
-      column-gap: .2em;
+
+    > .links {
+      height: calc(var(--navbar-height) * 1.8);
+    }
+    > .licensed {
+      height: calc(var(--navbar-height) * 1);
     }
   }
-  
+
+  a {
+    color: var(--link-color);
+    font-weight: 400;
+    text-decoration: none;
+    background-color: transparent;
+
+    &:hover {
+      color: var(--link-color);
+      opacity: .65;
+    }
+  }
+
 }
 
 .markdown-body {

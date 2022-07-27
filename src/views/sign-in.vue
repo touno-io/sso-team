@@ -1,9 +1,9 @@
-<script setup>
+<script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { ref } from 'vue'
 
-useHead({ title: 'Sign In' })
+useHead({ title: 'Sign In · TOUNO.io' })
 
 const router = useRouter()
 const route = useRoute()
@@ -47,6 +47,7 @@ const onLogin = async () => {
 
     // $router.push({ path: '/', query: JSON.parse(JSON.stringify($route.query)) })
   } catch (ex) {
+    // console.log(ex instanceof )
     errorMessage.value = !ex.response ? ex.message : ex.response.status > 400 ? 'Username or Password worng.' : 'Server endpoint is offline.'
     submitted.value = false
     retry.value++
@@ -111,13 +112,13 @@ const onLogin = async () => {
 
 <template>
 <div class="signin h-100">
-  <div class="row">
+  <div class="d-flex">
     <div class="d-none d-lg-flex col-lg-12 col-xl-16 justify-content-end">
       <img class="ml-auto todos" src="../assets/todos_empty.svg">
     </div>
-    <div class="col-36 col-lg-24 col-xl-20 mx-auto">
-      <div class="row">
-        <div class="col-30 col-md-24 mx-auto">
+    <div class="col-36 col-lg-24 col-xl-20">
+      <div class="d-flex justify-content-center">
+        <div class="col-30 col-md-24">
           <h2>Sign-In</h2>
           <small>Please sign-in with TOUNO.io ID to proceed.</small>
           <div class="login-form pt-3">
@@ -132,8 +133,9 @@ const onLogin = async () => {
                   </span>
                 </small>
               </div>
-              <div class="form-group">
-                <input type="checkbox" v-model="remember" /> Remember Me
+              <div class="form-group d-flex align-items-center" style="column-gap: 0.3em;">
+                <input type="checkbox" v-model="remember" id="remember" />
+                <label class="form-check-label" for="remember">Remember Me</label>
               </div>
               <button
                 :disabled="submitted" tabindex="3" type="submit" class="btn btn-block btn-primary"
@@ -142,10 +144,7 @@ const onLogin = async () => {
             </form>
             <div class="row forgot-menu">
               <div class="col-36 pt-3">
-                <a href="/forgot-id?username"><fa icon="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;" /> Forgot your account ID?</a>
-              </div>
-              <div class="col-36 pt-1">
-                <a href="/forgot-id?password"><fa icon="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;" /> Forgot your password?</a>
+                <a href="/forgot-password"><fa icon="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;" /> Forgot your password?</a>
               </div>
             </div>
           </div>

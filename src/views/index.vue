@@ -1,30 +1,292 @@
+<script lang="ts" setup>
+import { useRoute, useRouter } from 'vue-router'
 
-<script lang='ts' setup>
-import MarkdownIt from 'markdown-it'
-import emoji from 'markdown-it-emoji'
-import mermaid from 'markdown-it-mermaid-plugin'
-const markDownIt = new MarkdownIt({ html: true })
-  .use(emoji).use(mermaid)
+const router = useRouter()
+const route = useRoute()
 
-const postHtml = markDownIt.render(`
-# Testing embeded YouTube with Markdown
-
-This would be a first paragraph with some video introduction. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-Can look cool if it works
-
-Nunc sed id semper risus in hendrerit gravida rutrum quisque. Euismod nisi porta lorem mollis aliquam. Sit amet massa vitae tortor condimentum lacinia quis vel eros. Mauris sit amet massa vitae tortor condimentum lacinia quis vel. Quisque sagittis purus sit amet volutpat consequat mauris nunc.
-
-Facilisi cras fermentum odio eu feugiat pretium nibh ipsum. Feugiat in fermentum posuere urna nec. Sed cras ornare arcu dui. Eleifend mi in nulla posuere sollicitudin aliquam. Sed adipiscing diam donec adipiscing.
-`)
-// Patch page title
-const title = `# Testing embeded YouTube with Markdown`
+if (Object.keys(route.query).length > 0) router.replace('/')
 </script>
-
 <template>
-  <div class="container my-4 my-md-5">
-    <span class="markdown-body" v-html="postHtml" />
+  <div class="d-flex h-100 justify-content-center align-items-center">
+    <div class="box">
+      <div class="ghost">
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+        
+        <div class="ghost-container">
+          <div class="ghost-eyes">
+            <div class="eye-left"></div>
+            <div class="eye-right"></div>
+          </div>
+          <div class="ghost-bottom">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <div class="ghost-shadow"></div>
+      </div>
+      <div class="description">
+        <div class="description-container">
+          <div class="description-title">Whoops!</div>
+          <div class="description-text">It seems like we couldn't find the page you were looking for</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
+<style lang="scss">
+$purple: #28254C;
+$l-purple: #332F63;
+$t-purple: #8C8AA7;
+$pink: #FF5E65;
+$white: #fff;
+
+.box {
+  width: 620px;
+  height: 450px;
+  min-width: 150px;
+  max-height: 600px;
+  min-height: 350px;
+  position: absolute;
+  padding: 30px 50px;
+  
+  > .ghost {
+    padding: 15px 25px 25px;
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -30%);
+
+    .symbol {
+      &:nth-child(1) {
+        opacity: .2;
+        animation: shine 4s ease-in-out 3s infinite;
+        
+        &:before, &:after {
+          content: '';
+          width: 12px;
+          height: 4px;
+          background: $white;
+          position: absolute;
+          border-radius: 5px;
+          bottom: 65px;
+          left: 0;
+        }
+        &:before {
+          transform: rotate(45deg);
+        }
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
+      &:nth-child(2) {
+        position: absolute;
+        left: -5px;
+        top: 30px;
+        height: 18px;
+        width: 18px;
+        border: 4px solid;
+        border-radius: 50%;
+        border-color: $white;
+        opacity: .2;
+        animation: shine 4s ease-in-out 1.3s infinite;
+      }
+      &:nth-child(3) {
+        opacity: .2;
+        animation: shine 3s ease-in-out .5s infinite;
+        
+        &:before, &:after {
+          content: '';
+          width: 12px;
+          height: 4px;
+          background: $white;
+          position: absolute;
+          border-radius: 5px;
+          top: 5px;
+          left: 40px;
+        }
+        &:before {
+          transform: rotate(90deg);
+        }
+        &:after {
+          transform: rotate(180deg);
+        }
+      }
+      &:nth-child(4) {
+        opacity: .2;
+        animation: shine 6s ease-in-out 1.6s infinite;
+        
+        &:before, &:after {
+          content: '';
+          width: 15px;
+          height: 4px;
+          background: $white;
+          position: absolute;
+          border-radius: 5px;
+          top: 10px;
+          right: 30px;
+        }
+        &:before {
+          transform: rotate(45deg);
+        }
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
+      &:nth-child(5) {
+        position: absolute;
+        right: 5px;
+        top: 40px;
+        height: 12px;
+        width: 12px;
+        border: 3px solid;
+        border-radius: 50%;
+        border-color: $white;
+        opacity: .2;
+        animation: shine 1.7s ease-in-out 7s infinite;
+      }
+      &:nth-child(6) {
+        opacity: .2;
+        animation: shine 2s ease-in-out 6s infinite;
+        
+        &:before, &:after {
+          content: '';
+          width: 15px;
+          height: 4px;
+          background: $white;
+          position: absolute;
+          border-radius: 5px;
+          bottom: 65px;
+          right: -5px;
+        }
+        &:before {
+          transform: rotate(90deg);
+        }
+        &:after {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    > .ghost-container {
+      background: $white;
+      width: 160px;
+      height: 160px;
+      border-radius: 100px 100px 0 0;
+      position: relative;
+      margin: 0 auto;
+      animation: upndown 3s ease-in-out infinite;
+
+      > .ghost-eyes {
+        position: absolute;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, -45%); 
+        height: 18px;
+        width: 70px;
+        
+        > .eye-left {
+          width: 18px;
+          height: 18px;
+          background: $l-purple;
+          border-radius: 50%;
+          position: absolute;
+          left: 0;
+        }
+        > .eye-right {
+          width: 18px;
+          height: 18px;
+          background: $l-purple;
+          border-radius: 50%;   
+          position: absolute;
+          right: 0;
+        }
+      }
+
+      > .ghost-bottom {
+        display:flex;
+        position: absolute;
+        top:100%;
+        left:0;
+        right:0;
+
+        div {
+          flex-grow:1;
+          position: relative;
+          top:-10px;
+          height:20px;
+          border-radius:100%;
+          background-color: $white;
+
+          &:nth-child(2n) {
+            top: -12px;
+            margin: 0 -0px;
+            border-top: 15px solid $l-purple;
+            background: transparent;
+          }
+        }
+      }
+    }
+      
+    > .ghost-shadow {
+      height: 40px;
+      box-shadow: 0 60px 15px 5px #3B3769;
+      border-radius: 50%;
+      margin: 0 auto;
+      animation: smallnbig 3s ease-in-out infinite;
+    }
+  }
+  
+  > .description {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    > .description-container {
+      color: $white;
+      text-align: center;
+      // width: 200px;
+      font-size: 16px;
+      margin: 0 auto;
+    
+      > .description-title {
+        font-size: 24px;
+        letter-spacing: .5px;
+      }
+
+      > .description-text {
+        color: $t-purple;
+        line-height: 20px;
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+//keyframes
+@keyframes upndown {
+  0% {transform: translateY(5px);}
+  50% {transform: translateY(15px);}
+  100% {transform: translateY(5px);}
+}
+@keyframes smallnbig {
+  0% {width: 90px;}
+  50% {width: 100px;}
+  100% {width: 90px;}
+}
+@keyframes shine {
+  0% {opacity: .2;}
+  25% {opacity: .1;}
+  50% {opacity: .2;}
+  100% {opacity: .2;}
+}
+</style>
