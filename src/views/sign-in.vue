@@ -118,7 +118,7 @@ const onLogin = async () => {
     </div>
     <div class="col-36 col-lg-24 col-xl-20">
       <div class="d-flex justify-content-center">
-        <div class="col-30 col-md-24">
+        <div class="col-32 col-sm-26 col-md-20">
           <h2>Sign-In</h2>
           <small>Please sign-in with TOUNO.io ID to proceed.</small>
           <div class="login-form pt-3">
@@ -138,7 +138,7 @@ const onLogin = async () => {
                 <label class="form-check-label" for="remember">Remember Me</label>
               </div>
               <button
-                :disabled="submitted" tabindex="3" type="submit" class="btn btn-block btn-primary"
+                :disabled="submitted" tabindex="3" type="submit" class="btn btn-block btn-success"
                 v-text="submitted ? 'Please wait...' : retry > 0 ? 'Retry again, Sign In' : 'Sign In'"
               />
             </form>
@@ -166,9 +166,15 @@ img.todos {
     flex-direction: column;
     row-gap: 0.6em;
   }
+
+  .btn {
+    color: var(--bs-white)
+  }
+
   .custom-control-label {
     font-size: 0.9rem;
   }
+  
   .form-control {
     &.username {
       border-radius: 2px 2px 0 0;
@@ -181,6 +187,8 @@ img.todos {
       box-shadow: none;
     }
   }
+
+  
   .forgot-menu {
     font-size: 0.8rem;
   }

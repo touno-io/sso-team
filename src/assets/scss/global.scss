@@ -15,6 +15,8 @@ $font-size-base:          .85rem;
 $input-btn-padding-x:     1rem;
 $border-radius:           2px;
 $link-color:              $theme1;
+// $body-color:             #FFF;
+$btn-font-weight:         600;
 
 // Finally load bootstrap
 @import 'bootstrap/scss/bootstrap.scss';
@@ -47,7 +49,7 @@ $link-color:              $theme1;
   background-image: url(../background-circles.svg);
   min-height: 100vh;
   display: grid;
-  grid-template-rows: [row1-start] var(--navbar-height) 1fr calc(var(--navbar-height) * 2.2);
+  grid-template-rows: [row1-start] var(--navbar-height) 1fr auto;
   grid-template-areas:
     "navbar"
     "main"

@@ -1,5 +1,7 @@
 const { Octokit } = require('@octokit/core')
 
+const { VITE_APIS } = import.meta.env
+
 export default new Octokit({
-  baseUrl: 'https://www.touno.io/',
+  baseUrl: VITE_APIS,
 })

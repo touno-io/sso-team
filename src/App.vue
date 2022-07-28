@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import Navigation from './components/navigation.vue'
-import MainFooter from './components/main-footer.vue'
+import navigation from './components/navigation.vue'
+import mainFooter from './components/main-footer.vue'
 </script>
 
 <template>
-  <Navigation />
+  <navigation />
   <div class="container main-container">
     <router-view />
   </div>
-  <MainFooter />
+  <main-footer :popup="false" />
 </template>
