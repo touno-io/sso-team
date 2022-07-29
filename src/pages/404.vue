@@ -1,11 +1,8 @@
 <script lang="ts" setup>
-import { useRoute, useRouter } from 'vue-router'
-
-const router = useRouter()
-const route = useRoute()
-
-if (Object.keys(route.query).length > 0) router.replace('/')
+import { defineProps } from 'vue'
+defineProps(['is404'])
 </script>
+
 <template>
   <div class="d-flex h-100 justify-content-center align-items-center">
     <div class="box">
@@ -34,12 +31,20 @@ if (Object.keys(route.query).length > 0) router.replace('/')
       </div>
       <div class="description">
         <div class="description-container">
-          <div class="description-title">Whoops!</div>
-          <div class="description-text">It seems like we couldn't find the page you were looking for</div>
+          <div v-if="is404">
+            <h1 class="description-title"><strong>Whoops!</strong> <small>404 Page Not Found</small></h1>
+            <p class="description-text">It seems like we couldn't find the page you were looking for</p>
+          </div>
+          <div v-else>
+            <h1 class="description-title"><strong>Whoops!</strong> <small>500 Internal Server Error</small></h1>
+            <p class="description-text">Something went wrong.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+
 </template>
 
 <style lang="scss">
@@ -290,3 +295,4 @@ $white: #fff;
   100% {opacity: .2;}
 }
 </style>
+

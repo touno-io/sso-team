@@ -6,19 +6,14 @@ const routes = [
     redirect: '/'
   },
   {
-    path: '/blogs',
-    name: 'blogs',
-    component: () => import('../views/blogs.vue')
-  },
-  {
     path: '/sign-in',
     name: 'signin',
-    component: () => import('../views/sign-in.vue')
+    component: () => import('./pages/sign-in.vue')
   },
   {
     path: '/',
     name: '404',
-    component: () => import('../views/index.vue')
+    component: () => import('./pages/404.vue')
   }
 ]
 

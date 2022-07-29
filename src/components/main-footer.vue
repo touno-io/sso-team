@@ -1,21 +1,11 @@
-<script lang="ts" setup>
-import { defineProps } from 'vue'
-
-const props = defineProps({
-  popup: {
-    type: Boolean,
-    required: false
-  }
-})
-</script>
-
 <template>
   <div class="main-footer">
-    <div v-if="!popup" class="links">
+    <div class="links">
       <h2 id="footer-links" class="visually-hidden">Links</h2>
       <ul aria-labelledby="footer-links" class="container d-flex flex-direction-row align-items-center justify-content-center h-100 mb-0">
         <li><a target="_blank" href="http://legal.touno.io/terms-use">Terms &amp; Policies</a></li>
         <li><a target="_blank" href="http://legal.touno.io/privacy">Legal Information</a></li>
+        <li><a target="_blank" href="http://legal.touno.io/cookies">Cookie Policies</a></li>
       </ul>
     </div>
     <div class="licensed">
