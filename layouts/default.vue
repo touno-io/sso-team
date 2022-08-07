@@ -1,7 +1,9 @@
 <script>
-export default {
-  name: 'DefaultLayout'
-}
+import Vue from 'vue'
+
+export default Vue.extend({
+  name: 'DefaultLayout',
+})
 </script>
 
 <template>
@@ -15,10 +17,10 @@ export default {
 </template>
 
 <style lang="scss">
-$purple: #28254C;
-$l-purple: #332F63;
-$t-purple: #8C8AA7;
-$pink: #FF5E65;
+$purple: #28254c;
+$l-purple: #332f63;
+$t-purple: #8c8aa7;
+$pink: #ff5e65;
 $white: #fff;
 
 .box {
@@ -39,10 +41,11 @@ $white: #fff;
 
     .symbol {
       &:nth-child(1) {
-        opacity: .2;
+        opacity: 0.2;
         animation: shine 4s ease-in-out 3s infinite;
 
-        &:before, &:after {
+        &:before,
+        &:after {
           content: '';
           width: 12px;
           height: 4px;
@@ -68,14 +71,15 @@ $white: #fff;
         border: 4px solid;
         border-radius: 50%;
         border-color: $white;
-        opacity: .2;
+        opacity: 0.2;
         animation: shine 4s ease-in-out 1.3s infinite;
       }
       &:nth-child(3) {
-        opacity: .2;
-        animation: shine 3s ease-in-out .5s infinite;
+        opacity: 0.2;
+        animation: shine 3s ease-in-out 0.5s infinite;
 
-        &:before, &:after {
+        &:before,
+        &:after {
           content: '';
           width: 12px;
           height: 4px;
@@ -93,10 +97,11 @@ $white: #fff;
         }
       }
       &:nth-child(4) {
-        opacity: .2;
+        opacity: 0.2;
         animation: shine 6s ease-in-out 1.6s infinite;
 
-        &:before, &:after {
+        &:before,
+        &:after {
           content: '';
           width: 15px;
           height: 4px;
@@ -122,14 +127,15 @@ $white: #fff;
         border: 3px solid;
         border-radius: 50%;
         border-color: $white;
-        opacity: .2;
+        opacity: 0.2;
         animation: shine 1.7s ease-in-out 7s infinite;
       }
       &:nth-child(6) {
-        opacity: .2;
+        opacity: 0.2;
         animation: shine 2s ease-in-out 6s infinite;
 
-        &:before, &:after {
+        &:before,
+        &:after {
           content: '';
           width: 15px;
           height: 4px;
@@ -184,18 +190,18 @@ $white: #fff;
       }
 
       > .ghost-bottom {
-        display:flex;
+        display: flex;
         position: absolute;
-        top:100%;
-        left:0;
-        right:0;
+        top: 100%;
+        left: 0;
+        right: 0;
 
         div {
-          flex-grow:1;
+          flex-grow: 1;
           position: relative;
-          top:-10px;
-          height:20px;
-          border-radius:100%;
+          top: -10px;
+          height: 20px;
+          border-radius: 100%;
           background-color: $white;
 
           &:nth-child(2n) {
@@ -210,7 +216,7 @@ $white: #fff;
 
     > .ghost-shadow {
       height: 40px;
-      box-shadow: 0 60px 15px 5px #3B3769;
+      box-shadow: 0 60px 15px 5px #3b3769;
       border-radius: 50%;
       margin: 0 auto;
       animation: smallnbig 3s ease-in-out infinite;
@@ -232,7 +238,7 @@ $white: #fff;
 
       > .description-title {
         font-size: 24px;
-        letter-spacing: .5px;
+        letter-spacing: 0.5px;
       }
 
       > .description-text {
@@ -246,20 +252,39 @@ $white: #fff;
 
 //keyframes
 @keyframes upndown {
-  0% {transform: translateY(5px);}
-  50% {transform: translateY(15px);}
-  100% {transform: translateY(5px);}
+  0% {
+    transform: translateY(5px);
+  }
+  50% {
+    transform: translateY(15px);
+  }
+  100% {
+    transform: translateY(5px);
+  }
 }
 @keyframes smallnbig {
-  0% {width: 90px;}
-  50% {width: 100px;}
-  100% {width: 90px;}
+  0% {
+    width: 90px;
+  }
+  50% {
+    width: 100px;
+  }
+  100% {
+    width: 90px;
+  }
 }
 @keyframes shine {
-  0% {opacity: .2;}
-  25% {opacity: .1;}
-  50% {opacity: .2;}
-  100% {opacity: .2;}
+  0% {
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
 </style>
-

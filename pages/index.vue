@@ -4,17 +4,13 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'HomePage',
   head: {
-    title: 'Sign In'
-  }
+    title: 'Sign In',
+  },
 })
 </script>
 
 <template>
-<div>
-  Hello World
-</div>
+  <div>Hello World</div>
 </template>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
