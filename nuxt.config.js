@@ -1,7 +1,12 @@
 export default {
+  ssr: true,
   server: {
     host: 'localhost',
     port: 8080,
+    timing: false,
+  },
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
   },
   head: {
     titleTemplate: `%s · TOUNO.io`,
@@ -13,36 +18,44 @@ export default {
     ],
     link: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: true },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: true,
+      },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ],
     script: [
-      { src: 'https://static.cloudflareinsights.com/beacon.min.js?token=42e216b9090ru59384ygu891dce9eecde&spa=false', defer: true }
+      {
+        src: 'https://static.cloudflareinsights.com/beacon.min.js?token=42e216b9090ru59384ygu891dce9eecde&spa=false',
+        defer: true,
+      },
     ],
   },
-  css: [
-    '@assets/scss/global.scss'
-  ],
-  plugins: [],
+  // serverMiddleware: ['~/server-middleware/sign-in'],
+  css: ['~/assets/scss/global.scss'],
   components: true,
-  buildModules: [
-    '@nuxt/typescript-build',
-  ],
+  buildModules: ['@nuxt/typescript-build'],
+  plugins: ['~/plugins/vue-fontawesome.ts'],
   modules: [
+    ['cookie-universal-nuxt', { alias: 'cookiz' }],
     'bootstrap-vue/nuxt',
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
   ],
+  bootstrapVue: { icons: false },
   axios: {
-    baseURL: '/',
+    baseURL: process.env.BASE_URL || 'http://localhost:3000/',
   },
   build: {
+    babel: { compact: true },
+    parallel: true,
     terser: {
       parallel: true,
       cache: true,
-      sourceMap: false
-    }
+      sourceMap: false,
+    },
   },
   loaders: {
     scss: {},
-  }
+  },
 }
