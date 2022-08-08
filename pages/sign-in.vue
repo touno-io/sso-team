@@ -133,7 +133,7 @@ export default Vue.extend({
             <small>Please sign-in with TOUNO.io ID to proceed.</small>
             <div class="login-form pt-3">
               <form v-tabindex @submit.prevent="onLogin">
-                <div class="form-group">
+                <div class="form-group my-0">
                   <input
                     v-model="username"
                     tabindex="1"

@@ -33,10 +33,13 @@ export default {
     ],
   },
   // serverMiddleware: ['~/server-middleware/sign-in'],
-  css: ['~/assets/scss/global.scss'],
+  css: [
+    '~/assets/scss/global.scss',
+    '@fortawesome/fontawesome-svg-core/styles.css'
+  ],
   components: true,
   buildModules: ['@nuxt/typescript-build'],
-  plugins: ['~/plugins/vue-fontawesome.ts'],
+  plugins: ['~/plugins/vue-fontawesome.js'],
   modules: [
     ['cookie-universal-nuxt', { alias: 'cookiz' }],
     'bootstrap-vue/nuxt',

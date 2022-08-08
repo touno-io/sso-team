@@ -43,7 +43,7 @@ $btn-font-weight: 600;
   }
 }
 
-#app {
+#__layout > div {
   color: var(--text-color);
   background-color: var(--bg-color);
   background-image: url(.~/assets/background-circles.svg);

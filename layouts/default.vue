@@ -1,18 +1,21 @@
 <script>
 import Vue from 'vue'
+import MainNavbar from '~/components/main-navbar.vue'
+import MainFooter from '~/components/main-footer.vue'
 
 export default Vue.extend({
-  name: 'DefaultLayout',
+    name: "DefaultLayout",
+    components: { MainNavbar, MainFooter }
 })
 </script>
 
 <template>
-  <div id="app">
-    <navigation />
+  <div>
+    <MainNavbar />
     <div class="container main-container">
       <Nuxt />
     </div>
-    <main-footer :popup="false" />
+    <MainFooter />
   </div>
 </template>
 
