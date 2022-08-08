@@ -2,21 +2,21 @@
 <script>
 import Vue from 'vue'
 import { Octokit } from '@octokit/core'
-const octokit = new Octokit({ request: { timeout: 3000 } })
+const octokit = new Octokit({ request: { timeout: 1600 } })
 
 export default Vue.extend({
   name: 'SignInPage',
   middleware: 'sign-on',
   asyncData: async ({ env, query, redirect }) => {
     if (query.applicationName || query.errorMessage) return { query }
+    if (!query.redirectUrl || !query.applicationId || !query.once) {
+      return redirect('/sign-in', { errorStatus: 404, errorMessage: 'Page not found' })
+    }
 
     try {
       const { data } = await octokit.request(`GET ${env.baseUrl}/sso/{?redirectUrl}`, {
-        redirectUrl: env.ssoRedirectURL,
-        headers: {
-          // 'Application-ID': env.ssoAppID,
-          'Once-Key': Buffer.from(new Date().toISOString(), 'utf8').toString('base64'),
-        }
+        redirectUrl: query.redirectUrl,
+        headers: { 'Application-ID': query.applicationId, 'Once-Key': query.once }
       })
       return redirect('/sign-in', Object.assign(query, data))
     } catch (ex) {
@@ -85,6 +85,7 @@ export default Vue.extend({
 
 //     // this.$auth.$storage.setLocalStorage('signin-remember', {
 //     //   username: username,
+// http://localhost:8080/sign-in?redirectUrl=http%3A%2F%2Flocalhost%3A8080%2Fexample-sso&applicationId=0940f9f2-e43d-4910-ba2b-284db91c69b0&once=MjAyMi0wOC0wN1QwOToyMToxMC45OTha
 //     //   password: hash,
 //     //   remember: remember
 //     // }, true)

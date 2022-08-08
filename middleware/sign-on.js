@@ -1,4 +1,6 @@
-export default function ({ redirect, query }) {
-  const { redirectUri, applicationId, once } = query
-  if (!redirectUri || !applicationId || !once) return redirect('/sign-in', { errorStatus: 400, errorMessage: 'application not supported' })
+export default function () {
+  // console.log('check', query.redirectUrl, !query.redirectUrl, query.redirectUrl !== '')
+  // if (query.redirectUrl !== '' || !query.applicationId || !query.once) {
+  //   return redirect('/sign-in', { errorStatus: 404, errorMessage: 'Page not found' })
+  // }
 }
