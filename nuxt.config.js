@@ -7,9 +7,11 @@ export default {
   },
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+    ssoRedirectURL: process.env.SSO_REDIRECT_URL || 'http://localhost:8080/sign-in',
+    ssoAppID: process.env.SSO_APPLICATION_ID || '',
   },
   head: {
-    titleTemplate: `%s · TOUNO.io`,
+    titleTemplate: `%sTEAM TOUNO.io`,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -50,7 +52,7 @@ export default {
   ],
   bootstrapVue: { icons: false },
   axios: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000/',
+    baseURL: process.env.BASE_URL || 'http://localhost:3000/'
   },
   build: {
     babel: { compact: true },
