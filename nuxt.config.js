@@ -39,7 +39,10 @@ export default {
   ],
   components: true,
   buildModules: ['@nuxt/typescript-build'],
-  plugins: ['~/plugins/vue-fontawesome.js'],
+  plugins: [
+    '~/plugins/vue-fontawesome.js',
+    '~/plugins/vue-tabindex.js',
+  ],
   modules: [
     ['cookie-universal-nuxt', { alias: 'cookiz' }],
     'bootstrap-vue/nuxt',

@@ -136,6 +136,7 @@ export default Vue.extend({
                 <div class="form-group my-0">
                   <input
                     v-model="username"
+                    v-focus
                     tabindex="1"
                     type="text"
                     class="form-control username"
