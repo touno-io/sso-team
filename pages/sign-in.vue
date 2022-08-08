@@ -1,25 +1,58 @@
 <!-- eslint-disable no-console -->
 <script>
 import Vue from 'vue'
+import { Octokit } from '@octokit/core'
+const octokit = new Octokit({ request: { timeout: 3000 } })
 
 export default Vue.extend({
   name: 'SignInPage',
   middleware: 'sign-on',
-  asyncData: ({ store, query }) => {
-    console.log('store', store)
-    // console.log('req:', Object.keys(req))
-    return { query }
+  asyncData: async ({ env, query, redirect }) => {
+    if (query.applicationName || query.errorMessage) return { query }
+
+    try {
+      const { data } = await octokit.request(`GET ${env.baseUrl}/sso/{?redirectUrl}`, {
+        redirectUrl: env.ssoRedirectURL,
+        headers: {
+          // 'Application-ID': env.ssoAppID,
+          'Once-Key': Buffer.from(new Date().toISOString(), 'utf8').toString('base64'),
+        }
+      })
+      return redirect('/sign-in', Object.assign(query, data))
+    } catch (ex) {
+      if (ex.response) {
+        return redirect('/sign-in', { errorStatus: ex.response.status, errorMessage: ex.response.data.error })
+      } else if (ex.request) {
+        console.error('ex.req::', ex.request)
+      } else {
+        console.error('ex.unknow::', ex)
+      }
+
+      return redirect('/sign-in', { errorStatus: 400, errorMessage: 'Server is busy or something is wrong.' })
+    }
   },
   data: () => ({
+    query: {
+      applicationName: '',
+      errorStatus: 0,
+      errorMessage: '',
+    },
     retry: 0,
+    sign: {
+      username: '',
+      password: '',
+    },
+    signMessage: '',
     submitted: false,
-    username: '',
-    password: '',
     remember: false,
-    errorMessage: '',
   }),
   head: {
-    title: 'Sign In',
+    title: 'Sign In · ',
+  },
+  computed: {
+    IsError () {
+      return !!this.query.errorStatus || !!this.submitted
+    }
   },
   created() {
     // let signin = this.$auth.$storage.getLocalStorage('signin-remember', true)
@@ -122,20 +155,23 @@ export default Vue.extend({
 
 <template>
   <div class="signin h-100">
-    <div class="d-flex">
+    <div v-if="IsError" class="h-100 w-100">
+      <Ghost :title="query.errorMessage" />
+    </div>
+    <div v-else class="d-flex">
       <div class="d-none d-lg-flex col-lg-12 col-xl-16 justify-content-end">
         <img class="ml-auto todos" src="../assets/todos_empty.svg" />
       </div>
       <div class="col-36 col-lg-24 col-xl-20">
         <div class="d-flex justify-content-center">
           <div class="col-32 col-sm-26 col-md-24">
-            <h2>Sign-In</h2>
-            <small>Please sign-in with TOUNO.io ID to proceed.</small>
             <div class="login-form pt-3">
+              <h2>Sign-In</h2>
+              <small>Please sign-in with <strong>{{query.applicationName}}</strong> to proceed. </small>
               <form v-tabindex @submit.prevent="onLogin">
                 <div class="form-group my-0">
                   <input
-                    v-model="username"
+                    v-model="sign.username"
                     v-focus
                     tabindex="1"
                     type="text"
@@ -143,16 +179,16 @@ export default Vue.extend({
                     placeholder="TEAM Account ID (@touno.io)"
                   />
                   <input
-                    v-model="password"
+                    v-model="sign.password"
                     tabindex="2"
                     type="password"
                     class="form-control password"
                     placeholder="Password"
                   />
                   <small class="help-block text-danger text-bold">
-                    <span v-if="errorMessage">
+                    <span v-if="signMessage">
                       <fa icon="fa-solid fa-triangle-exclamation" />
-                      {{ errorMessage }}
+                      {{ signMessage }}
                     </span>
                   </small>
                 </div>

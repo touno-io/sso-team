@@ -2,9 +2,9 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'HomePage',
+  name: 'ExamplePage',
   head: {
-    title: 'Sign In',
+    title: 'Example · ',
   },
 })
 </script>
