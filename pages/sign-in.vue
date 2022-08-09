@@ -1,42 +1,40 @@
 <!-- eslint-disable no-console -->
 <script>
 import Vue from 'vue'
-import { Octokit } from '@octokit/core'
-const octokit = new Octokit({ request: { timeout: 1600 } })
 
 export default Vue.extend({
   name: 'SignInPage',
   middleware: 'sign-on',
-  asyncData: async ({ env, query, redirect }) => {
-    if (query.applicationName || query.errorMessage) return { query }
-    if (!query.redirectUrl || !query.applicationId || !query.once) {
-      return redirect('/sign-in', { errorStatus: 404, errorMessage: 'Page not found' })
+  asyncData: async ({ $api, $cookiz, query, redirect }) => {
+    const { redirectUrl, applicationId, once, applicationName, errorMessage } = query
+
+    if (process.client) {
+      const ssoToken = $cookiz.get('sso.auth')
+      if (redirectUrl && applicationId && once && applicationName && ssoToken) redirect(`${redirectUrl}#token=${ssoToken}&once=${once}`)
     }
 
-    try {
-      const { data } = await octokit.request(`GET ${env.baseUrl}/sso/{?redirectUrl}`, {
-        redirectUrl: query.redirectUrl,
-        headers: { 'Application-ID': query.applicationId, 'Once-Key': query.once }
-      })
-      return redirect('/sign-in', Object.assign(query, data))
-    } catch (ex) {
-      if (ex.response) {
-        return redirect('/sign-in', { errorStatus: ex.response.status, errorMessage: ex.response.data.error })
-      } else if (ex.request) {
-        console.error('ex.req::', ex.request)
-      } else {
-        console.error('ex.unknow::', ex)
+    if (process.server) {
+      if (applicationName || errorMessage) return
+      if (!redirectUrl || !applicationId || !once) {
+        return redirect('/sign-in', { errorStatus: 404, errorMessage: 'Page not found' })
       }
+      try {
+        const { data } = await $api.request(`GET /sso/{?redirectUrl}`, { redirectUrl, headers: { 'Application-ID': applicationId, 'Once-Key': once } })
+        return redirect('/sign-in', Object.assign(query, data))
+      } catch (ex) {
+        if (ex.response) {
+          return redirect('/sign-in', { errorStatus: ex.response.status, errorMessage: ex.response.data.error })
+        } else if (ex.request) {
+          console.error('ex.req::', ex.request)
+        } else {
+          console.error('ex.unknow::', ex)
+        }
 
-      return redirect('/sign-in', { errorStatus: 400, errorMessage: 'Server is busy or something is wrong.' })
+        return redirect('/sign-in', { errorStatus: 400, errorMessage: 'Server is busy or something is wrong.' })
+      }
     }
   },
   data: () => ({
-    query: {
-      applicationName: '',
-      errorStatus: 0,
-      errorMessage: '',
-    },
     retry: 0,
     sign: {
       username: '',
@@ -44,120 +42,72 @@ export default Vue.extend({
     },
     signMessage: '',
     submitted: false,
-    remember: false,
   }),
   head: {
     title: 'Sign In · ',
   },
   computed: {
     IsError () {
-      return !!this.query.errorStatus || !!this.submitted
+      return !!this.$route.query.errorStatus
     }
   },
-  created() {
-    // let signin = this.$auth.$storage.getLocalStorage('signin-remember', true)
-    // if (!signin) return
-    // if (signin.username) this.username = signin.username
-    // if (signin.remember) {
-    //   this.password = signin.password
-    //   this.remember = signin.remember
-    // }
-    // if (this.$auth.loggedIn) this.$router.replace('/')
+  mounted () {
+    console.log('mounted', this.$route.query)
+    const { applicationName } = this.$route.query
+    this.sign.username = sessionStorage.getItem(`sign.${applicationName}.username`) || ''
+  },
+  methods: {
+    async onLogin () {
+      if (!this.sign.username) {
+        this.signMessage = 'Username is empty.'
+        return
+      }
+      if (!this.sign.password) {
+        this.signMessage = 'Password is empty.'
+        return
+      }
+
+      try {
+        this.$nuxt.$loading.start()
+        this.submitted = true
+        this.signMessage = ''
+
+        const { data } = await this.$api.request(`POST /v1/auth/sign-in`, {
+          headers: { Authorization: `Basic ${Buffer.from(`${this.sign.username}:${this.sign.password}`).toString('base64')}` },
+        })
+        const { redirectUrl, applicationName, applicationId, once } = this.$route.query
+        this.$cookiz.set('sso.auth', data.token)
+        this.$cookiz.set('sso.app', applicationName)
+        this.$cookiz.set('sso.id', applicationId)
+        sessionStorage.setItem(`sign.${applicationName}.authorization`, data.token)
+        sessionStorage.setItem(`sign.${applicationName}.username`, this.sign.username)
+
+        location.href = `${redirectUrl}#token=${data.token}&once=${once}`
+      } catch (ex) {
+        if (ex.response) {
+          this.signMessage = `${ex.response.data.error} (${ex.response.status})`
+          return redirect('/sign-in', { errorStatus: ex.response.status, errorMessage: ex.response.data.error })
+        } else if (ex.request) {
+          this.signMessage = `Server endpoint is offline. (404)`
+          console.error('ex.req::', ex.request)
+        } else {
+          this.signMessage = `${ex.message} (400)`
+          console.error('ex.unknow::', ex)
+        }
+        this.submitted = false
+        this.retry++
+      } finally {
+        this.$nuxt.$loading.finish()
+      }
+    }
   },
 })
-
-// const onLogin = async () => {
-//   try {
-//     if (!username.value) throw new Error('Username is empty')
-//     if (!password.value) throw new Error('Password is empty.')
-//     console.log(`${username.value}:${password.value}`)
-//     console.log(`Basic ${window.btoa(`${username.value}:${password.value}`)}`)
-
-//     submitted.value = true
-//     // const hash = bcrypt.hashSync(password, 4)
-
-//     // await this.$auth.loginWith('local', {
-//     //   headers: { Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}` }
-//     // })
-
-//     // if (!this.$auth.loggedIn) throw new Error('Username or Password worng.')
-//     // submitted = false
-
-//     // this.$auth.$storage.setLocalStorage('signin-remember', {
-//     //   username: username,
-// http://localhost:8080/sign-in?redirectUrl=http%3A%2F%2Flocalhost%3A8080%2Fexample-sso&applicationId=0940f9f2-e43d-4910-ba2b-284db91c69b0&once=MjAyMi0wOC0wN1QwOToyMToxMC45OTha
-//     //   password: hash,
-//     //   remember: remember
-//     // }, true)
-
-//     // $router.push({ path: '/', query: JSON.parse(JSON.stringify($route.query)) })
-//   } catch (ex) {
-//     console.log(ex)
-//     errorMessage.value = !ex.response ? ex.message : ex.response.status > 400 ? 'Username or Password worng.' : 'Server endpoint is offline.'
-//     submitted.value = false
-//     retry.value++
-//     console.log(ex)
-//   }
-// }
-
-// export default {
-//   data: () => ({
-//     username: '',
-//     password: '',
-//     remember: false,
-//     submitted: false,
-//     retry: 0,
-//     errorMessage: null
-//   }),
-//   created () {
-//     // let signin = this.$auth.$storage.getLocalStorage('signin-remember', true)
-//     // if (!signin) return
-
-//     // if (signin.username) this.username = signin.username
-//     // if (signin.remember) {
-//     //   this.password = signin.password
-//     //   this.remember = signin.remember
-//     // }
-//     // if (this.$auth.loggedIn) this.$router.replace('/')
-//   },
-//   methods: {
-//     async onLogin () {
-//       if (!this.username.trim()) return this.errorMessage = 'Username is empty.'
-//       if (!this.password) return this.errorMessage = 'Password is empty.'
-//       try {
-//         this.submitted = true
-//         const hash = bcrypt.hashSync(this.password, 4)
-
-//         await this.$auth.loginWith('local', {
-//           headers: { Authorization: `Basic ${Buffer.from(`${this.username.trim()}:${hash}`).toString('base64')}` },
-//           data: { expired: !this.remember }
-//         })
-//         console.log('$auth', this.$auth)
-
-//         if (!this.$auth.loggedIn) throw new Error('Username or Password worng.')
-//         this.submitted = false
-
-//         this.$auth.$storage.setLocalStorage('signin-remember', {
-//           username: this.username.trim(),
-//           password: hash,
-//           remember: this.remember
-//         }, true)
-
-//         this.$router.push({ path: '/', query: JSON.parse(JSON.stringify(this.$route.query)) })
-//       } catch (ex) {
-//         this.errorMessage = !ex.response ? ex.message : ex.response.status > 400 ? 'Username or Password worng.' : 'Server endpoint is offline.'
-//         this.submitted = false
-//         this.retry++
-//       }
-//     }
-//   }
-// }
 </script>
 
 <template>
   <div class="signin h-100">
     <div v-if="IsError" class="h-100 w-100">
-      <Ghost :title="query.errorMessage" />
+      <Ghost :title="$route.query.errorMessage" />
     </div>
     <div v-else class="d-flex">
       <div class="d-none d-lg-flex col-lg-12 col-xl-16 justify-content-end">
@@ -168,19 +118,21 @@ export default Vue.extend({
           <div class="col-32 col-sm-26 col-md-24">
             <div class="login-form pt-3">
               <h2>Sign-In</h2>
-              <small>Please sign-in with <strong>{{query.applicationName}}</strong> to proceed. </small>
+              <small>Please sign-in with <strong>{{$route.query.applicationName}}</strong> to proceed. </small>
               <form v-tabindex @submit.prevent="onLogin">
-                <div class="form-group my-0">
+                <div class="form-group">
                   <input
-                    v-model="sign.username"
+                    v-model.trim="sign.username"
                     v-focus
+                    :disabled="submitted"
                     tabindex="1"
                     type="text"
                     class="form-control username"
                     placeholder="TEAM Account ID (@touno.io)"
                   />
                   <input
-                    v-model="sign.password"
+                    v-model.trim="sign.password"
+                    :disabled="submitted"
                     tabindex="2"
                     type="password"
                     class="form-control password"
@@ -192,15 +144,6 @@ export default Vue.extend({
                       {{ signMessage }}
                     </span>
                   </small>
-                </div>
-                <div
-                  class="form-group d-flex align-items-center"
-                  style="column-gap: 0.3em"
-                >
-                  <input id="remember" v-model="remember" type="checkbox" />
-                  <label class="form-check-label" for="remember"
-                    >Remember Me</label
-                  >
                 </div>
                 <button
                   :disabled="submitted"

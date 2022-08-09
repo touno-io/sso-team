@@ -43,6 +43,7 @@ export default {
   plugins: [
     '~/plugins/vue-fontawesome.js',
     '~/plugins/vue-tabindex.js',
+    '~/plugins/vue-octokit.js',
   ],
   modules: [
     ['cookie-universal-nuxt', { alias: 'cookiz' }],

@@ -1,6 +1,6 @@
-export default function () {
-  // console.log('check', query.redirectUrl, !query.redirectUrl, query.redirectUrl !== '')
-  // if (query.redirectUrl !== '' || !query.applicationId || !query.once) {
-  //   return redirect('/sign-in', { errorStatus: 404, errorMessage: 'Page not found' })
-  // }
+export default function ({ $cookiz, query, redirect }) {
+  const ssoToken = $cookiz.get('sso.auth')
+  if (ssoToken && query.redirectUrl && query.applicationName && query.once) {
+    return redirect(`${query.redirectUrl}#token=${ssoToken}&once=${query.once}`)
+  }
 }
