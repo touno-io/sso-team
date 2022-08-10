@@ -6,8 +6,9 @@ export default {
   },
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
-    ssoRedirectURL: process.env.SSO_REDIRECT_URL || 'http://localhost:8080/sign-in',
-    ssoAppID: process.env.SSO_APPLICATION_ID || '',
+    ssoUrl: process.env.SSO_BASE_URL || 'http://localhost:8080',
+    ssoRedirectURL: process.env.SSO_EXAMPLE_REDIRECT || 'http://localhost:8080/example',
+    ssoAppID: process.env.SSO_EXAMPLE_ID || '',
   },
   head: {
     titleTemplate: `%sTEAM TOUNO.io`,
@@ -41,6 +42,8 @@ export default {
   components: true,
   buildModules: ['@nuxt/typescript-build'],
   plugins: [
+    { src: '~/plugins/vue-notification.server.js', mode: 'server' },
+    { src: '~/plugins/vue-notification.client.js', mode: 'client' },
     '~/plugins/vue-fontawesome.js',
     '~/plugins/vue-tabindex.js',
     '~/plugins/vue-octokit.js',

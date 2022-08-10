@@ -70,7 +70,8 @@ $btn-font-weight: 600;
 
   .main-container {
     grid-area: main;
-    padding: 2em 0;
+    padding-top: 2em;
+    padding-bottom: 2em;
     > .signin {
       display: flex;
       flex-direction: column;
@@ -102,6 +103,10 @@ $btn-font-weight: 600;
       opacity: 0.65;
     }
   }
+
+  // .btn-primary:disabled {
+  //   background-color: #a2a2b3;
+  // }
 }
 
 .markdown-body {
