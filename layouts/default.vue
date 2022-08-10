@@ -12,6 +12,7 @@ export default Vue.extend({
 <template>
   <div>
     <MainNavbar />
+    <notifications position="top center" group="exception" style="margin-top:4em" />
     <div class="container main-container">
       <Nuxt />
     </div>

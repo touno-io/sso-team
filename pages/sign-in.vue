@@ -8,10 +8,8 @@ export default Vue.extend({
   asyncData: async ({ $api, $cookiz, query, redirect }) => {
     const { redirectUrl, applicationId, once, applicationName, errorMessage } = query
 
-    if (process.client) {
-      const ssoToken = $cookiz.get('sso.auth')
-      if (redirectUrl && applicationId && once && applicationName && ssoToken) redirect(`${redirectUrl}#token=${ssoToken}&once=${once}`)
-    }
+    const ssoToken = $cookiz.get('sso.auth')
+    if (redirectUrl && applicationId && once && applicationName && ssoToken) redirect(`${redirectUrl}#token=${ssoToken}&once=${once}`)
 
     if (process.server) {
       if (applicationName || errorMessage) return
@@ -29,7 +27,6 @@ export default Vue.extend({
         } else {
           console.error('ex.unknow::', ex)
         }
-
         return redirect('/sign-in', { errorStatus: 400, errorMessage: 'Server is busy or something is wrong.' })
       }
     }
@@ -52,9 +49,9 @@ export default Vue.extend({
     }
   },
   mounted () {
-    console.log('mounted', this.$route.query)
-    const { applicationName } = this.$route.query
-    this.sign.username = sessionStorage.getItem(`sign.${applicationName}.username`) || ''
+    // console.log('mounted', this.$route.query)
+    // const { applicationName } = this.$route.query
+    // this.sign.username = localStorage.getItem(`sign.${applicationName}.username`) || ''
   },
   methods: {
     async onLogin () {
@@ -79,8 +76,7 @@ export default Vue.extend({
         this.$cookiz.set('sso.auth', data.token)
         this.$cookiz.set('sso.app', applicationName)
         this.$cookiz.set('sso.id', applicationId)
-        sessionStorage.setItem(`sign.${applicationName}.authorization`, data.token)
-        sessionStorage.setItem(`sign.${applicationName}.username`, this.sign.username)
+        // localStorage.setItem(`sign.${applicationName}.username`, this.sign.username)
 
         location.href = `${redirectUrl}#token=${data.token}&once=${once}`
       } catch (ex) {
@@ -119,7 +115,7 @@ export default Vue.extend({
             <div class="login-form pt-3">
               <h2>Sign-In</h2>
               <small>Please sign-in with <strong>{{$route.query.applicationName}}</strong> to proceed. </small>
-              <form v-tabindex @submit.prevent="onLogin">
+              <form v-tabindex class="mt-2" @submit.prevent="onLogin">
                 <div class="form-group">
                   <input
                     v-model.trim="sign.username"
@@ -150,14 +146,10 @@ export default Vue.extend({
                   tabindex="3"
                   type="submit"
                   class="btn btn-block btn-success"
-                  v-text="
-                    submitted
-                      ? 'Please wait...'
-                      : retry > 0
-                      ? 'Retry again, Sign In'
-                      : 'Sign In'
-                  "
-                />
+                >
+                  <fa :icon="`fa-solid ${submitted?'fa-sync':'fa-arrow-right-to-bracket'}`" class="mr-2" :class="{'fa-spin':submitted}" />
+                  <span v-text="submitted?'Please wait...':retry>0?'Retry again, Sign In':'Sign In'"></span>
+                </button>
               </form>
               <div class="row forgot-menu">
                 <div class="col-36 pt-3">
