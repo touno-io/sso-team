@@ -1,12 +1,12 @@
-FROM node:lts-alpine
+FROM arm64v8/node:16.16.0-alpine
 
 WORKDIR /app
 COPY . .
 
-RUN npm install
-RUN npm build
+RUN yarn
+RUN yarn build
 
 ENV HOST 0.0.0.0
 EXPOSE 8080
 
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]
