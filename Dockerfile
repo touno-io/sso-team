@@ -1,4 +1,4 @@
-FROM node:carbon-alpine
+FROM node:lts
 
 WORKDIR /app
 COPY . .
