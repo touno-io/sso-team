@@ -8,13 +8,18 @@ on:
 
 jobs:
   buildx:
-    runs-on: ubuntu-18.04
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+
     env:
       IMAGE_FILE: Dockerfile
       IMAGE_NAME: sso-team
       KUBE_CONTAINER: deploy/touno-sso
       KUBE_NAMESPACE: web-api
-      PLATFORMS: linux/amd64,linux/386,linux/arm64
+      PLATFORMS: linux/amd64,linux/arm64
     steps:
       - uses: actions/checkout@v2
 
