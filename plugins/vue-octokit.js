@@ -4,7 +4,7 @@ import { Octokit } from '@octokit/core'
 export default (ctx, inject) => {
   const OctokitDefault = Octokit.defaults({
     baseUrl: ctx.env.baseUrl,
-    request: { timeout: 1600 }
+    request: { timeout: 2200 }
   })
   const api = new OctokitDefault()
   // Inject axios to the context as $axios
