@@ -6,17 +6,18 @@ export default Vue.extend({
   props: {
     error: {
       type: Object,
-      default: () => null
+      default: () => null,
     },
     title: {
       type: String,
-      default: () => '404 Page Not Found'
+      default: () => '404 Page Not Found',
     },
     description: {
       type: String,
-      default: () => `It seems like we couldn't find the page you were looking for`
+      default: () =>
+        `It seems like we couldn't find the page you were looking for`,
     },
-  }
+  },
 })
 </script>
 

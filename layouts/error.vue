@@ -4,8 +4,8 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-    layout: "error",
-    props: ["error"]
+  layout: 'error',
+  props: ['error'],
 })
 </script>
 

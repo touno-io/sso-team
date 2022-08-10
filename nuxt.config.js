@@ -7,7 +7,8 @@ export default {
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
     ssoUrl: process.env.SSO_BASE_URL || 'http://localhost:8080',
-    ssoRedirectURL: process.env.SSO_EXAMPLE_REDIRECT || 'http://localhost:8080/example',
+    ssoRedirectURL:
+      process.env.SSO_EXAMPLE_REDIRECT || 'http://localhost:8080/example',
     ssoAppID: process.env.SSO_EXAMPLE_ID || '',
   },
   head: {
@@ -37,7 +38,7 @@ export default {
   // serverMiddleware: ['~/server-middleware/sign-in'],
   css: [
     '~/assets/scss/global.scss',
-    '@fortawesome/fontawesome-svg-core/styles.css'
+    '@fortawesome/fontawesome-svg-core/styles.css',
   ],
   components: true,
   buildModules: ['@nuxt/typescript-build'],
@@ -55,7 +56,7 @@ export default {
   ],
   bootstrapVue: { icons: false },
   axios: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000/'
+    baseURL: process.env.BASE_URL || 'http://localhost:3000/',
   },
   build: {
     babel: { compact: true },

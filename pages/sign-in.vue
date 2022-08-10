@@ -6,28 +6,42 @@ export default Vue.extend({
   name: 'SignInPage',
   middleware: 'sign-on',
   asyncData: async ({ $api, $cookiz, query, redirect }) => {
-    const { redirectUrl, applicationId, once, applicationName, errorMessage } = query
+    const { redirectUrl, applicationId, once, applicationName, errorMessage } =
+      query
 
     const ssoToken = $cookiz.get('sso.auth')
-    if (redirectUrl && applicationId && once && applicationName && ssoToken) redirect(`${redirectUrl}#token=${ssoToken}&once=${once}`)
+    if (redirectUrl && applicationId && once && applicationName && ssoToken)
+      redirect(`${redirectUrl}#token=${ssoToken}&once=${once}`)
 
     if (process.server) {
       if (applicationName || errorMessage) return
       if (!redirectUrl || !applicationId || !once) {
-        return redirect('/sign-in', { errorStatus: 404, errorMessage: 'Page not found' })
+        return redirect('/sign-in', {
+          errorStatus: 404,
+          errorMessage: 'Page not found',
+        })
       }
       try {
-        const { data } = await $api.request(`GET /sso/{?redirectUrl}`, { redirectUrl, headers: { 'Application-ID': applicationId, 'Once-Key': once } })
+        const { data } = await $api.request(`GET /sso/{?redirectUrl}`, {
+          redirectUrl,
+          headers: { 'Application-ID': applicationId, 'Once-Key': once },
+        })
         return redirect('/sign-in', Object.assign(query, data))
       } catch (ex) {
         if (ex.response) {
-          return redirect('/sign-in', { errorStatus: ex.response.status, errorMessage: ex.response.data.error })
+          return redirect('/sign-in', {
+            errorStatus: ex.response.status,
+            errorMessage: ex.response.data.error,
+          })
         } else if (ex.request) {
           console.error('ex.req::', ex.request)
         } else {
           console.error('ex.unknow::', ex)
         }
-        return redirect('/sign-in', { errorStatus: 400, errorMessage: 'Server is busy or something is wrong.' })
+        return redirect('/sign-in', {
+          errorStatus: 400,
+          errorMessage: 'Server is busy or something is wrong.',
+        })
       }
     }
   },
@@ -44,17 +58,17 @@ export default Vue.extend({
     title: 'Sign In · ',
   },
   computed: {
-    IsError () {
+    IsError() {
       return !!this.$route.query.errorStatus
-    }
+    },
   },
-  mounted () {
+  mounted() {
     // console.log('mounted', this.$route.query)
     // const { applicationName } = this.$route.query
     // this.sign.username = localStorage.getItem(`sign.${applicationName}.username`) || ''
   },
   methods: {
-    async onLogin () {
+    async onLogin() {
       if (!this.sign.username) {
         this.signMessage = 'Username is empty.'
         return
@@ -70,9 +84,14 @@ export default Vue.extend({
         this.signMessage = ''
 
         const { data } = await this.$api.request(`POST /v1/auth/sign-in`, {
-          headers: { Authorization: `Basic ${Buffer.from(`${this.sign.username}:${this.sign.password}`).toString('base64')}` },
+          headers: {
+            Authorization: `Basic ${Buffer.from(
+              `${this.sign.username}:${this.sign.password}`
+            ).toString('base64')}`,
+          },
         })
-        const { redirectUrl, applicationName, applicationId, once } = this.$route.query
+        const { redirectUrl, applicationName, applicationId, once } =
+          this.$route.query
         this.$cookiz.set('sso.auth', data.token)
         this.$cookiz.set('sso.app', applicationName)
         this.$cookiz.set('sso.id', applicationId)
@@ -82,7 +101,10 @@ export default Vue.extend({
       } catch (ex) {
         if (ex.response) {
           this.signMessage = `${ex.response.data.error} (${ex.response.status})`
-          return redirect('/sign-in', { errorStatus: ex.response.status, errorMessage: ex.response.data.error })
+          return redirect('/sign-in', {
+            errorStatus: ex.response.status,
+            errorMessage: ex.response.data.error,
+          })
         } else if (ex.request) {
           this.signMessage = `Server endpoint is offline. (404)`
           console.error('ex.req::', ex.request)
@@ -95,7 +117,7 @@ export default Vue.extend({
       } finally {
         this.$nuxt.$loading.finish()
       }
-    }
+    },
   },
 })
 </script>
@@ -114,7 +136,10 @@ export default Vue.extend({
           <div class="col-32 col-sm-26 col-md-24">
             <div class="login-form pt-3">
               <h2>Sign-In</h2>
-              <small>Please sign-in with <strong>{{$route.query.applicationName}}</strong> to proceed. </small>
+              <small
+                >Please sign-in with
+                <strong>{{ $route.query.applicationName }}</strong> to proceed.
+              </small>
               <form v-tabindex class="mt-2" @submit.prevent="onLogin">
                 <div class="form-group">
                   <input
@@ -147,8 +172,22 @@ export default Vue.extend({
                   type="submit"
                   class="btn btn-block btn-success"
                 >
-                  <fa :icon="`fa-solid ${submitted?'fa-sync':'fa-arrow-right-to-bracket'}`" class="mr-2" :class="{'fa-spin':submitted}" />
-                  <span v-text="submitted?'Please wait...':retry>0?'Retry again, Sign In':'Sign In'"></span>
+                  <fa
+                    :icon="`fa-solid ${
+                      submitted ? 'fa-sync' : 'fa-arrow-right-to-bracket'
+                    }`"
+                    class="mr-2"
+                    :class="{ 'fa-spin': submitted }"
+                  />
+                  <span
+                    v-text="
+                      submitted
+                        ? 'Please wait...'
+                        : retry > 0
+                        ? 'Retry again, Sign In'
+                        : 'Sign In'
+                    "
+                  ></span>
                 </button>
               </form>
               <div class="row forgot-menu">

@@ -6,20 +6,16 @@ function elemKeydown($elem, settings, event) {
   const isEnter = event.which === 13
   const isIgnore = false // $fld.is(".enter-ignore")
   const isKeyOff = false // $fld.is(".tab-keyoff")
-  if (isTab && isKeyOff)
-    return
+  if (isTab && isKeyOff) return
   if (isTab || (settings.enterKey && isEnter && !isIgnore)) {
     event.preventDefault()
-    if (isRevTab)
-      focusPrev($elem)
-    else
-      focusNext($elem)
+    if (isRevTab) focusPrev($elem)
+    else focusNext($elem)
   }
 }
 
 function focusPrev(pool) {
-  if (pool.length < 1)
-    return
+  if (pool.length < 1) return
   const a = document.activeElement
   if (!a || !pool.includes(a)) {
     pool[0].focus()
@@ -43,13 +39,12 @@ function focusNext(pool) {
 
 function elementFind(el, tagname) {
   for (const e of el.getElementsByTagName(tagname)) {
-    if (e.hasAttribute('tabindex'))
-      el.$elem.push(e)
+    if (e.hasAttribute('tabindex')) el.$elem.push(e)
   }
 }
 
 Vue.directive('focus', {
-  bind: (el) => el.focus()
+  bind: (el) => el.focus(),
 })
 
 Vue.directive('tabindex', {
@@ -58,7 +53,7 @@ Vue.directive('tabindex', {
     const settings = { enterKey: !!binding.modifiers.enter } // v-if="!activate || !enabled"
     elementFind(el, 'input')
     elementFind(el, 'button')
-    el.$elem.sort((a, b) => a.tabIndex > b.tabIndex ? 1 : -1)
+    el.$elem.sort((a, b) => (a.tabIndex > b.tabIndex ? 1 : -1))
 
     for (const element of el.$elem) {
       element.addEventListener('keydown', (e) =>
