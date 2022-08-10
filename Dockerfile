@@ -3,7 +3,7 @@ FROM node:lts-alpine
 WORKDIR /app
 COPY . .
 
-RUN npm i
+RUN npm install
 RUN npm build
 
 ENV HOST 0.0.0.0
