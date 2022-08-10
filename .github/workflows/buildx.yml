@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
+        node: [16]
 
     env:
       IMAGE_FILE: Dockerfile
@@ -22,6 +23,31 @@ jobs:
       PLATFORMS: linux/arm64
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+
+      - name: Get yarn cache directory path 🛠
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache node_modules 📦
+        uses: actions/cache@v2.1.4
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies 👨🏻‍💻
+        run: yarn
+
+      - name: Run linter 👀
+        run: yarn build
 
       - name: Prepare 🔰
         id: prepare

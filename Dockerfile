@@ -1,10 +1,7 @@
-FROM arm64v8/node:16.16.0-alpine
+FROM node:lts-apline
 
 WORKDIR /app
 COPY . .
-
-RUN yarn
-RUN yarn build
 
 ENV HOST 0.0.0.0
 EXPOSE 8080
