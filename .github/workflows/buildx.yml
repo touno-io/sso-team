@@ -94,7 +94,7 @@ jobs:
 
       - name: Trigger deploy 🚀
         if: success() && github.event_name != 'pull_request' && !contains(github.ref, 'main')
-        uses: ladislas14/kubernetes-action@1.0.1
+        uses: ladislas14/kubernetes-action@1.02
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
@@ -102,7 +102,7 @@ jobs:
 
       - name: Status deployment 🔍
         if: success() && github.event_name != 'pull_request' && !contains(github.ref, 'main')
-        uses: ladislas14/kubernetes-action@1.0.1
+        uses: ladislas14/kubernetes-action@1.02
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
