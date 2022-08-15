@@ -1,4 +1,5 @@
 # SSO Team
+
 [![buildx](https://github.com/touno-io/sso-team/actions/workflows/buildx.yml/badge.svg?branch=main)](https://github.com/touno-io/sso-team/actions/workflows/buildx.yml)
 ![last commit (main)](https://img.shields.io/github/last-commit/touno-io/line-notice/main.svg?style=flat-square)
 ![MIT](https://img.shields.io/dub/l/vibe-d.svg?style=flat-square)
