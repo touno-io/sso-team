@@ -21,6 +21,10 @@ jobs:
       KUBE_CONTAINER: deploy/touno-sso
       KUBE_NAMESPACE: web-api
       PLATFORMS: linux/amd64,linux/arm64/v8
+
+      SSO_BASE_URL: http://sso.touno.io
+      SSO_EXAMPLE_ID: ${{ secrets.SSO_EXAMPLE_ID }}
+      SSO_EXAMPLE_REDIRECT: http://sso.touno.io/example
     steps:
       - uses: actions/checkout@v3
 
