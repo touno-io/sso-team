@@ -42,6 +42,7 @@ export default Vue.extend({
       } catch (ex) {
         auth.loggedIn = false
         if (ex.response) {
+          console.error('ex.req::', ex.request)
           console.error('ex.res', ex.response.data)
           auth.error = ex.response.data.error
         } else if (ex.request) {
@@ -117,6 +118,11 @@ export default Vue.extend({
         Single Sign-On (SSO) solutions provide users with an easier way to
         access all of their accounts. Implementing these solutions allows you to
         access all of your accounts, with just one set of credentials.
+        <ul v-if="auth.loggedIn">
+          <li><a href="https://docs.touno.io/">https://docs.touno.io/</a></li>
+          <li><a href="https://notice.touno.io/">https://notice.touno.io/</a></li>
+          <li><a href="https://health.touno.io/">https://health.touno.io/</a></li>
+        </ul>
       </div>
     </div>
     <div v-if="!auth.loggedIn" class="col-sm-14 col-36">

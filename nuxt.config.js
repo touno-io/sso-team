@@ -1,3 +1,5 @@
+const isDev = process.env.NODE_ENV === 'development'
+
 export default {
   ssr: true,
   server: {
@@ -20,7 +22,7 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [
-      {
+      isDev ? '' : {
         src: 'https://static.cloudflareinsights.com/beacon.min.js',
         'data-cf-beacon': '{"token": "fb5b3ae4504f483f8a77f9d83d215c9c"}',
         defer: true,
