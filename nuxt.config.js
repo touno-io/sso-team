@@ -19,12 +19,6 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com',
-        crossorigin: true,
-      },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ],
     script: [
@@ -41,7 +35,7 @@ export default {
     '@fortawesome/fontawesome-svg-core/styles.css',
   ],
   components: true,
-  buildModules: ['@nuxt/typescript-build'],
+  buildModules: ['@nuxt/typescript-build','@nuxtjs/google-fonts'],
   plugins: [
     { src: '~/plugins/vue-notification.server.js', mode: 'server' },
     { src: '~/plugins/vue-notification.client.js', mode: 'client' },
@@ -57,6 +51,15 @@ export default {
   bootstrapVue: { icons: false },
   axios: {
     baseURL: process.env.BASE_URL || 'http://localhost:3000/',
+  },
+  googleFonts: {
+    prefetch: true,
+    display: 'swap',
+    families: {
+      Roboto: true,
+      Poppins: [400, 600],
+      Mulish: [400, 700],
+    }
   },
   build: {
     babel: { compact: true },
