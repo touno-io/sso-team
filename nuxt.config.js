@@ -18,9 +18,7 @@ export default {
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-    ],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [
       {
         src: 'https://static.cloudflareinsights.com/beacon.min.js',
@@ -35,7 +33,7 @@ export default {
     '@fortawesome/fontawesome-svg-core/styles.css',
   ],
   components: true,
-  buildModules: ['@nuxt/typescript-build','@nuxtjs/google-fonts'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/google-fonts'],
   plugins: [
     { src: '~/plugins/vue-notification.server.js', mode: 'server' },
     { src: '~/plugins/vue-notification.client.js', mode: 'client' },
@@ -59,7 +57,7 @@ export default {
       Roboto: true,
       Poppins: [400, 600],
       Mulish: [400, 700],
-    }
+    },
   },
   build: {
     babel: { compact: true },
