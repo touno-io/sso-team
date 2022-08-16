@@ -22,9 +22,9 @@ jobs:
       KUBE_NAMESPACE: web-api
       PLATFORMS: linux/amd64,linux/arm64/v8
 
-      SSO_BASE_URL: http://sso.touno.io
+      SSO_BASE_URL: https://sso.touno.io
       SSO_EXAMPLE_ID: ${{ secrets.SSO_EXAMPLE_ID }}
-      SSO_EXAMPLE_REDIRECT: http://sso.touno.io/example
+      SSO_EXAMPLE_REDIRECT: https://sso.touno.io/example
     steps:
       - uses: actions/checkout@v3
 
@@ -102,7 +102,7 @@ jobs:
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          args: set image ${{ steps.prepare.outputs.kube_container }} touno-app=${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }} -n ${{ steps.prepare.outputs.kube_namespace }}
+          args: set image ${{ steps.prepare.outputs.kube_container }} sso-app=${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }} -n ${{ steps.prepare.outputs.kube_namespace }}
 
       - name: Status deployment 🔍
         if: success() && github.event_name != 'pull_request' && !contains(github.ref, 'main')
