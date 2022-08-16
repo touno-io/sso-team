@@ -22,6 +22,7 @@ jobs:
       KUBE_NAMESPACE: web-api
       PLATFORMS: linux/amd64,linux/arm64/v8
 
+      BASE_URL: https://www.touno.io
       SSO_BASE_URL: https://sso.touno.io
       SSO_EXAMPLE_ID: ${{ secrets.SSO_EXAMPLE_ID }}
       SSO_EXAMPLE_REDIRECT: https://sso.touno.io/example
