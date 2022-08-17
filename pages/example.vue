@@ -20,13 +20,15 @@ const sso = {
 
 export default Vue.extend({
   name: 'ExamplePage',
-  async asyncData({ $cookiz, $api, env }) {
+  async asyncData({ $cookiz, $axios, env }) {
     const token = $cookiz.get('sso.auth')
     const auth = {
       ssoUrl: env.ssoUrl,
       loggedIn: !!token,
       user: null,
       token,
+      appId: $cookiz.get('sso.id'),
+      appName: $cookiz.get('sso.app'),
       error: '',
     }
     if (auth.loggedIn) {
@@ -34,9 +36,15 @@ export default Vue.extend({
         // const { data } = await $api.get(`${env.baseUrl}/v1/auth/account`, {
         //   headers: { Authorization: `Bearer ${token}` }
         // })
-        const { data } = await $api.request(`GET /v1/auth/account`, {
+        const { headers, data } = await $axios.get('/v1/auth/account', {
           headers: { Authorization: `Bearer ${token}` },
         })
+
+        if (headers['sso-token']) {
+          auth.token = headers['sso-token']
+          $cookiz.set('sso.auth', token)
+        }
+
         auth.user = data
         console.log(`${auth.user.gravatar}?s=220&d=404`)
       } catch (ex) {
@@ -113,16 +121,56 @@ export default Vue.extend({
 <template>
   <div class="row">
     <div class="col-sm-22 col-36 mb-3 mb-sm-1">
-      <h5>Example Sign-On</h5>
-      <div>
+      <div v-if="!auth.loggedIn" class="mt-4">
+        <h5>Example Sign-On</h5>
         Single Sign-On (SSO) solutions provide users with an easier way to
         access all of their accounts. Implementing these solutions allows you to
         access all of your accounts, with just one set of credentials.
-        <ul v-if="auth.loggedIn">
-          <li><a href="https://docs.touno.io/">https://docs.touno.io/</a></li>
-          <li><a href="https://notice.touno.io/">https://notice.touno.io/</a></li>
-          <li><a href="https://health.touno.io/">https://health.touno.io/</a></li>
-        </ul>
+      </div>
+      <h5 class="mt-3 mb-2">Projects</h5>
+      <ul>
+        <li>
+          <a href="https://docs.touno.io/" target="_blank">Documentation</a>
+        </li>
+        <li>
+          <a href="https://touno-io.github.io/line-notice/liff/" target="_blank"
+            >Notice Manager</a
+          >
+        </li>
+        <li>
+          <a href="https://health.touno.io/" target="_blank"
+            >Status Server (Uptime)</a
+          >
+        </li>
+      </ul>
+      <div v-if="auth.loggedIn" class="mt-2">
+        <strong
+          >After you login
+          <span class="badge bg-secondary" v-text="auth.appName" /> you will see
+          these information:</strong
+        >
+        <div class="mt-4">
+          <h5>
+            JWT Encoded
+            <fa
+              icon="fa-solid fa-arrow-up-right-from-square"
+              class="ml-3"
+              style="font-size: 0.85rem"
+            />
+            <a :href="`https://jwt.io/?token=${auth.token}`" target="_blank"
+              >jwt.io</a
+            >
+          </h5>
+          <code class="jwt">
+            <div
+              v-for="(jwt, i) in auth.token.split('.')"
+              :key="i"
+              :class="`token_${i}`"
+            >
+              <span v-text="`${jwt}${i < 2 ? '.' : ''}`" />
+            </div>
+          </code>
+        </div>
       </div>
     </div>
     <div v-if="!auth.loggedIn" class="col-sm-14 col-36">
@@ -148,7 +196,8 @@ export default Vue.extend({
       <img
         :src="`${auth.user.gravatar}?s=220&d=404`"
         class="rounded-circle mb-3"
-        style="width: 120px"
+        width="120"
+        height="120"
         :alt="auth.user.name"
       />
       <h5 v-text="`Welcome, ${auth.user.name}`" />
@@ -187,4 +236,31 @@ export default Vue.extend({
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.jwt {
+  border: #363d5a solid 1px;
+  display: block;
+  padding: 1.25em;
+  border-radius: 0.3em;
+
+  > div {
+    display: inline;
+
+    // &:not(:last-child)::after {
+    //   content: '.';
+    //   color: var(--text-color);
+    //   margin: 0 .25em;
+    // }
+
+    &.token_0 {
+      color: #41b883;
+    }
+    &.token_1 {
+      color: #dc3545;
+    }
+    &.token_2 {
+      color: #4a8cd2;
+    }
+  }
+}
+</style>

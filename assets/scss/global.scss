@@ -106,6 +106,15 @@ $btn-font-weight: 600;
   // .btn-primary:disabled {
   //   background-color: #a2a2b3;
   // }
+  .table {
+    &.table-dark {
+      background-color: transparent;
+
+      tbody > tr {
+        font-size: 0.8rem;
+      }
+    }
+  }
 }
 
 .markdown-body {

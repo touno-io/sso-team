@@ -12,6 +12,10 @@ export default {
       process.env.SSO_EXAMPLE_REDIRECT || 'http://localhost:8080/example',
     ssoAppID: process.env.SSO_EXAMPLE_ID || '',
   },
+  loading: {
+    color: '#ee5151',
+    height: '3px',
+  },
   head: {
     titleTemplate: `%sTEAM TOUNO.io`,
     meta: [
@@ -22,11 +26,13 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [
-      isDev ? '' : {
-        src: 'https://static.cloudflareinsights.com/beacon.min.js',
-        'data-cf-beacon': '{"token": "fb5b3ae4504f483f8a77f9d83d215c9c"}',
-        defer: true,
-      },
+      isDev
+        ? ''
+        : {
+            src: 'https://static.cloudflareinsights.com/beacon.min.js',
+            'data-cf-beacon': '{"token": "fb5b3ae4504f483f8a77f9d83d215c9c"}',
+            defer: true,
+          },
     ],
   },
   // serverMiddleware: ['~/server-middleware/sign-in'],
@@ -47,10 +53,12 @@ export default {
     ['cookie-universal-nuxt', { alias: 'cookiz' }],
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
+    '@nuxt/image',
   ],
   bootstrapVue: { icons: false },
   axios: {
     baseURL: process.env.BASE_URL || 'http://localhost:3000/',
+    retry: { retries: 3 },
   },
   googleFonts: {
     prefetch: true,

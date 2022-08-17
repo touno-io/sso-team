@@ -5,7 +5,7 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'SignInPage',
   middleware: 'sign-on',
-  asyncData: async ({ $api, $cookiz, query, redirect }) => {
+  asyncData: async ({ $axios, $cookiz, query, redirect }) => {
     const { redirectUrl, applicationId, once, applicationName, errorMessage } =
       query
 
@@ -22,8 +22,8 @@ export default Vue.extend({
         })
       }
       try {
-        const { data } = await $api.request(`GET /sso/{?redirectUrl}`, {
-          redirectUrl,
+        const { data } = await $axios.get(`/sso/`, {
+          params: { redirectUrl },
           headers: { 'Application-ID': applicationId, 'Once-Key': once },
         })
         return redirect('/sign-in', Object.assign(query, data))
@@ -82,8 +82,8 @@ export default Vue.extend({
         this.$nuxt.$loading.start()
         this.submitted = true
         this.signMessage = ''
-
-        const { data } = await this.$api.request(`POST /v1/auth/sign-in`, {
+        this.$axios.defaults.timeout = 6400
+        const { data } = await this.$axios.post('/v1/auth/sign-in', null, {
           headers: {
             Authorization: `Basic ${Buffer.from(
               `${this.sign.username}:${this.sign.password}`
