@@ -46,15 +46,16 @@ export default Vue.extend({
         }
 
         auth.user = data
-        console.log(`${auth.user.gravatar}?s=220&d=404`)
       } catch (ex) {
         auth.loggedIn = false
         if (ex.response) {
-          console.error('ex.req::', ex.request)
-          console.error('ex.res', ex.response.data)
+          const { method, path, headers } = ex.request._options
+          console.error('ex.req::', { method, path, headers })
+          console.error('ex.res::', ex.response.data)
           auth.error = ex.response.data.error
         } else if (ex.request) {
-          console.error('ex.req::', ex.request)
+          const { method, path, headers } = ex.request._options
+          console.error('ex.req::', { method, path, headers })
         } else {
           console.error('ex.unknow::', ex)
         }
@@ -119,8 +120,8 @@ export default Vue.extend({
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-sm-22 col-36 mb-3 mb-sm-1">
+  <div class="row example">
+    <div class="col-sm-22 col-36 mb-3 mb-sm-1 project">
       <div v-if="!auth.loggedIn" class="mt-4">
         <h5>Example Sign-On</h5>
         Single Sign-On (SSO) solutions provide users with an easier way to
@@ -131,6 +132,11 @@ export default Vue.extend({
       <ul>
         <li>
           <a href="https://docs.touno.io/" target="_blank">Documentation</a>
+        </li>
+        <li>
+          <a href="https://legal.touno.io/" target="_blank"
+            >Terms & Conditions</a
+          >
         </li>
         <li>
           <a href="https://touno-io.github.io/line-notice/liff/" target="_blank"
@@ -161,19 +167,18 @@ export default Vue.extend({
               >jwt.io</a
             >
           </h5>
-          <code class="jwt">
-            <div
+          <div class="jwt">
+            <span
               v-for="(jwt, i) in auth.token.split('.')"
               :key="i"
               :class="`token_${i}`"
-            >
-              <span v-text="`${jwt}${i < 2 ? '.' : ''}`" />
-            </div>
-          </code>
+              v-text="`${jwt}${i < 2 ? '.' : ''}`"
+            />
+          </div>
         </div>
       </div>
     </div>
-    <div v-if="!auth.loggedIn" class="col-sm-14 col-36">
+    <div v-if="!auth.loggedIn" class="col-sm-14 col-36 logined">
       <h5>Guest User</h5>
       <div>Please click Sign-In Button.</div>
       <button
@@ -192,7 +197,7 @@ export default Vue.extend({
         <span v-text="sign.redirected ? 'Redirect...' : 'Sign-In TOUNO.io'" />
       </button>
     </div>
-    <div v-else class="col-sm-14 col-36">
+    <div v-else class="col-sm-14 col-36 logined">
       <img
         :src="`${auth.user.gravatar}?s=220&d=404`"
         class="rounded-circle mb-3"
@@ -237,13 +242,29 @@ export default Vue.extend({
 </template>
 
 <style lang="scss">
+@media screen and (max-width: 450px) {
+  .example {
+    display: flex;
+    flex-direction: row;
+    .logined {
+      order: 1;
+      text-align: center;
+    }
+    .project {
+      order: 2;
+    }
+  }
+}
+
 .jwt {
   border: #363d5a solid 1px;
   display: block;
   padding: 1.25em;
   border-radius: 0.3em;
+  word-wrap: break-word;
+  word-break: break-all;
 
-  > div {
+  > span {
     display: inline;
 
     // &:not(:last-child)::after {
