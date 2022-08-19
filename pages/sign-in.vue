@@ -29,12 +29,16 @@ export default Vue.extend({
         return redirect('/sign-in', Object.assign(query, data))
       } catch (ex) {
         if (ex.response) {
+          const { method, path, headers } = ex.request._options
+          console.error('ex.req::', { method, path, headers })
+
           return redirect('/sign-in', {
             errorStatus: ex.response.status,
             errorMessage: ex.response.data.error,
           })
         } else if (ex.request) {
-          console.error('ex.req::', ex.request)
+          const { method, path, headers } = ex.request._options
+          console.error('ex.req::', { method, path, headers })
         } else {
           console.error('ex.unknow::', ex)
         }
