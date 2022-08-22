@@ -126,25 +126,71 @@ export default Vue.extend({
         access all of their accounts. Implementing these solutions allows you to
         access all of your accounts, with just one set of credentials.
       </div>
-      <h5 class="mt-3 mb-2">Projects</h5>
+      <h5 class="mt-3 mb-2">Sitemap</h5>
       <ul>
+        <li>
+          <strong>Projects</strong>
+          <ul>
+            <h6>Golive</h6>
+            <li>
+              <a href="https://notice.touno.io" target="_blank"
+                >Notice Manager</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/touno-io/hentai-downloader"
+                target="_blank"
+                >Hentai Downloader (Windows App)</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/touno-io/psp-library-win"
+                target="_blank"
+                >PSP Library (Windows App)</a
+              >
+            </li>
+            <li>
+              <a href="https://github.com/touno-io/node-debuger" target="_blank"
+                >Debugger (node_modules)</a
+              >
+            </li>
+            <h6>Implement</h6>
+            <li>
+              <a href="https://github.com/touno-io/gokub-bot" target="_blank"
+                >GoKub Bot</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/touno-io/team-tasklist"
+                target="_blank"
+                >TEAM Tasklist</a
+              >
+            </li>
+          </ul>
+        </li>
         <li>
           <a href="https://docs.touno.io/" target="_blank">Documentation</a>
         </li>
         <li>
-          <a href="https://legal.touno.io/" target="_blank"
-            >Terms & Conditions</a
-          >
+          <strong>Terms & Conditions</strong>
+          <ul>
+            <li>
+              <a href="https://legal.touno.io/terms-use"
+                >Terms and Conditions</a
+              >
+            </li>
+            <li><a href="https://legal.touno.io/privacy">Privacy Policy</a></li>
+            <li><a href="https://legal.touno.io/cookies">Cookies Policy</a></li>
+          </ul>
         </li>
         <li>
-          <a href="https://touno-io.github.io/line-notice/liff/" target="_blank"
-            >Notice Manager</a
-          >
+          <a href="https://mr.touno.io" target="_blank">About Us</a>
         </li>
         <li>
-          <a href="https://health.touno.io/" target="_blank"
-            >Status Server (Uptime)</a
-          >
+          <a href="https://health.touno.io/" target="_blank">Uptime Stats</a>
         </li>
       </ul>
       <div v-if="auth.loggedIn" class="mt-2">
@@ -250,6 +296,15 @@ export default Vue.extend({
     }
     .project {
       order: 2;
+    }
+  }
+}
+.example {
+  ul {
+    padding-left: 1.5em;
+
+    h6 {
+      margin: 0.5em 0 0.2em 0;
     }
   }
 }
