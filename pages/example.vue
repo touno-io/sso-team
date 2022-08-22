@@ -3,8 +3,6 @@
 import Vue from 'vue'
 
 const sso = {
-  baseSignUrl: 'http://localhost:8080/sign-in',
-  baseUserUrl: 'http://localhost:3000/v1/auth/account',
   getUser() {
     return this.$cookiz.get('sso.auth') || ''
   },
