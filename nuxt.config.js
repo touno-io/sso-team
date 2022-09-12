@@ -53,7 +53,6 @@ export default {
     ['cookie-universal-nuxt', { alias: 'cookiz' }],
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
-    '@nuxt/image',
   ],
   bootstrapVue: { icons: false },
   axios: {
