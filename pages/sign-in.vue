@@ -101,7 +101,8 @@ export default Vue.extend({
         this.$cookiz.set('sso.id', applicationId)
         // localStorage.setItem(`sign.${applicationName}.username`, this.sign.username)
 
-        location.href = `${redirectUrl}#token=${data.token}&once=${once}`
+        // location.href = `${redirectUrl}#token=${data.token}&once=${once}`
+        this.$router.go(`${redirectUrl}#token=${data.token}&once=${once}`);
       } catch (ex) {
         if (ex.response) {
           this.signMessage = `${ex.response.data.error} (${ex.response.status})`
