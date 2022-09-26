@@ -12,7 +12,7 @@ module.exports = {
   plugins: [],
   // add your custom rules here
   rules: {
-    "vue/valid-attribute-name": "off",
-    "vue/valid-model-definition": "off",
+    'vue/valid-attribute-name': 'off',
+    'vue/valid-model-definition': 'off',
   },
 }
