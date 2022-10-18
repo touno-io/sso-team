@@ -9,8 +9,8 @@ export default {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
     ssoUrl: process.env.SSO_BASE_URL || 'http://localhost:8080',
     ssoRedirectURL:
-      process.env.SSO_EXAMPLE_REDIRECT || 'http://localhost:8080/example',
-    ssoAppID: process.env.SSO_EXAMPLE_ID || '',
+      process.env.SSO_APP_REDIRECT || 'http://localhost:8080/example',
+    ssoAppID: process.env.SSO_APP_ID || '',
   },
   loading: {
     color: '#ee5151',
@@ -47,7 +47,6 @@ export default {
     { src: '~/plugins/vue-notification.client.js', mode: 'client' },
     '~/plugins/vue-fontawesome.js',
     '~/plugins/vue-tabindex.js',
-    '~/plugins/vue-octokit.js',
   ],
   modules: [
     ['cookie-universal-nuxt', { alias: 'cookiz' }],
